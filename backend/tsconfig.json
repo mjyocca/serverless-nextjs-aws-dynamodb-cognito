@@ -8,7 +8,11 @@
     "removeComments": true,
     "sourceMap": true,
     "target": "ES2020",
-    "outDir": "lib"
+    "outDir": "lib",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
   },
   "include": ["src/**/*.ts", "serverless.ts"],
   "exclude": [
@@ -19,6 +23,6 @@
     ".vscode/**/*"
   ],
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": ["tsconfig-paths/register"],
   }
 }
