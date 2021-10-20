@@ -1,7 +1,7 @@
-import "tsconfig-paths/register";
-import { server } from "@libs/app";
-import { handler as worldHandler } from "@functions/world/handler";
-import { handler as helloHandler } from "@functions/hello/handler";
+import 'tsconfig-paths/register';
+import { server } from '@libs/app';
+import { handler as worldHandler } from '@functions/world/handler';
+import { handler as helloHandler } from '@functions/hello/handler';
 
 const PORT = 5000;
 
@@ -11,5 +11,5 @@ app.use(`/hello`, helloHandler);
 app.use(`/world`, worldHandler);
 
 app.listen(PORT as number, () => {
-	console.log(`listening on port:${PORT}, 🔥 http://localhost:${PORT} 🔥`);
+  console.log(`listening on port:${PORT}, 🔥 http://localhost:${PORT} 🔥`);
 });
