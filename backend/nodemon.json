@@ -1,6 +1,6 @@
 {
-	"watch": ["src"],
-	"ext": "ts,json",
-	"ignore": ["src/**/*.spec.ts"],
-	"exec": "pnpm run start"
+  "watch": ["src"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "pnpm run start"
 }
