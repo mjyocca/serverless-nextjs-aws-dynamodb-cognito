@@ -1,14 +1,14 @@
 {
-	"name": "serverless-nextjs-aws-dynamodb-cognito",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "pnpm test -r",
-		"start": "pnpm start -r",
-		"dev": "pnpm dev -r"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+  "name": "serverless-nextjs-aws-dynamodb-cognito",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "pnpm test -r",
+    "start": "pnpm start -r",
+    "dev": "pnpm dev -r"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
