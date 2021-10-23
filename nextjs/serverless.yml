@@ -1,4 +1,4 @@
 # serverless.yml
 # NextJS Serverless Component - https://github.com/serverless-nextjs/serverless-next.js
 nextjsApp:
-  component: "@sls-next/serverless-component"
+  component: '@sls-next/serverless-component'
