@@ -6,7 +6,7 @@ export default {
     {
       httpApi: {
         method: '*',
-        path: '/hello',
+        path: '/api/hello',
       },
     },
   ],

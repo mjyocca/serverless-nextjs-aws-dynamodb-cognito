@@ -3,11 +3,11 @@ import { default as world } from './world';
 
 export const handlers = [
   {
-    path: '/hello',
+    path: '/api/hello',
     handler: require('./hello/handler').handler,
   },
   {
-    path: '/world',
+    path: '/api/world',
     handler: require('./world/handler').handler,
   },
 ];

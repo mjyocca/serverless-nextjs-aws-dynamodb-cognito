@@ -6,7 +6,7 @@ const ServerlessConfig = {
     {
       httpApi: {
         method: '*',
-        path: '/world',
+        path: '/api/world',
       },
     },
   ],
