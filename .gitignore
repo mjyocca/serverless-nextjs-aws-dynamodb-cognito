@@ -6,3 +6,5 @@ dist
 backend/lib
 
 .env
+
+draft

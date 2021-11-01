@@ -7,6 +7,7 @@ const ServerlessConfig = {
       httpApi: {
         method: '*',
         path: '/api/world',
+        authorizer: 'serviceAuthorizer',
       },
     },
   ],
