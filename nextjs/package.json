@@ -10,10 +10,13 @@
     "deploy": "npm run build; serverless"
   },
   "dependencies": {
+    "@geist-ui/react": "^2.2.0",
     "next": "12",
     "next-auth": "^3.29.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "link:@@geist-ui/react-icons",
+    "swr": "^1.0.1"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.23.0",
