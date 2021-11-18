@@ -1,19 +1,28 @@
 import type { AWS } from '@serverless/typescript';
 import functions from '@functions/index';
+import { execSync } from 'child_process';
+
+const [{ dependencies }]: [{ dependencies: Record<string, any> }] = JSON.parse(execSync('pnpm ls --prod --json').toString());
+
+const externals = Object.entries(dependencies)
+	.reduce((acc: string[], [name, dep]) => {
+		if (!dep.version.startsWith('link:')) acc.push(name)
+		return acc;
+	}, []);
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-typescript-template',
   frameworkVersion: '2',
   custom: {
     esbuild: {
-      packager: 'pnpm',
+      packager: 'npm',
       bundle: true,
       minify: false,
       sourcemap: true,
-      exclude: ['aws-sdk'],
       target: 'node14',
       define: { 'require.resolve': undefined },
       platform: 'node',
+      external: externals
     },
   },
   useDotenv: true,
