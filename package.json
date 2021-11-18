@@ -6,7 +6,8 @@
   "scripts": {
     "test": "pnpm test -r",
     "start": "pnpm start -r",
-    "dev": "pnpm dev -r"
+    "dev": "pnpm dev -r",
+    "deploy": "pnpm deploy -r"
   },
   "keywords": [],
   "author": "",

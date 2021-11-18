@@ -90,7 +90,7 @@ const serverlessConfiguration: AWS = {
           UserPoolId: {
             Ref: 'serviceUserPool',
           },
-          CallbackURLs: ['https://localhost:3000'],
+          CallbackURLs: ['http://localhost:3000', 'http://localhost:5000'],
           ExplicitAuthFlows: ['ALLOW_USER_SRP_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
           GenerateSecret: false,
           SupportedIdentityProviders: ['COGNITO'],
