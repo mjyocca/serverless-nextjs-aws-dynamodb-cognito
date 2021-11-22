@@ -84,15 +84,15 @@ const serverlessConfiguration: AWS = {
         Type: 'AWS::Cognito::UserPoolClient',
         Properties: {
           ClientName: 'service-user-pool-client-${opt:stage, self:provider.stage}',
-          AllowedOAuthFlows: ['implicit'],
+          AllowedOAuthFlows: ['code'],
           AllowedOAuthFlowsUserPoolClient: true,
           AllowedOAuthScopes: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
           UserPoolId: {
             Ref: 'serviceUserPool',
           },
-          CallbackURLs: ['http://localhost:3000', 'http://localhost:5000'],
+          CallbackURLs: ['http://localhost:3000/api/auth/callback/cognito'],
           ExplicitAuthFlows: ['ALLOW_USER_SRP_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
-          GenerateSecret: false,
+          GenerateSecret: true,
           SupportedIdentityProviders: ['COGNITO'],
         },
       },
