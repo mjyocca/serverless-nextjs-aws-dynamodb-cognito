@@ -11,18 +11,18 @@
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
+    "@geist-ui/react-icons": "^1.0.1",
     "next": "12",
     "next-auth": "^3.29.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-icons": "link:@@geist-ui/react-icons",
     "swr": "^1.0.1"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.23.0",
     "@types/node": "^14.14.25",
     "@types/react": "17.0.30",
-    "eslint": "8.0.1",
+    "eslint": "<8.0.0",
     "eslint-config-next": "11.1.2",
     "ts-node": "^9.1.1",
     "typescript": "4.4.4"
