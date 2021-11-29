@@ -15,17 +15,11 @@ const Home: NextPage = () => {
           <>
             <div>Signed In</div>
             <>{JSON.stringify(session)}</>
-            <><button onClick={() => signOut()}>Sign Out</button></>
           </>
         }
         {!session &&
           <>
             <div>Signed Out</div>
-            <button onClick={() => {
-              signIn('cognito', {
-                callbackUrl: `${window.location.origin}`
-              })
-            }}>Sign In</button>
           </>
         }
       </div>

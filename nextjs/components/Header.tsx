@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Button, Popover, User, useTheme } from '@geist-ui/react';
 import { Settings } from '@geist-ui/react-icons';
 import { signIn, signOut, useSession } from 'next-auth/client'
+import type { Session } from 'next-auth';
 
 const MenuLinks: React.FC = () => {
   const router = useRouter();
@@ -65,15 +66,24 @@ const MenuLinks: React.FC = () => {
   )
 }
 
-const PopoverSettings: React.FC = () => {
-  const [session, loading] = useSession();
+type PopoverSettingsProps = {
+  session: Session | null;
+  loading: boolean;
+}
+
+const PopoverSettings: React.FC<PopoverSettingsProps> = ({ session, loading }: PopoverSettingsProps) => {
+  const signInHandler = () => signIn('cognito', { callbackUrl: `${window.location.origin}` })
+  const signOutHandler = () => signOut();
   return (
     <>
       <Popover.Item title>
         User Settings
       </Popover.Item>
       <Popover.Item>
-        {session ? <Button>Sign Out</Button> : <Button>Sign In</Button>}
+        {session && !loading
+          ? <Button onClick={signOutHandler}>Sign Out</Button>
+          : <Button onClick={signInHandler}>Sign In</Button>
+        }
       </Popover.Item>
     </>
   )
@@ -87,7 +97,7 @@ const Header: React.FC = () => {
       <nav className="nav_menu">
         <h1 className="title">Serverless NextJS Dashboard</h1>
         <div>
-          <Popover content={PopoverSettings}>
+          <Popover content={<PopoverSettings session={session} loading={loading} />}>
             <User src="https://unix.bio/assets/avatar.png" name={session?.user?.email}>
               {session?.user?.email}
             </User>
