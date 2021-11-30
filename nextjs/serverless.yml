@@ -2,3 +2,9 @@
 # NextJS Serverless Component - https://github.com/serverless-nextjs/serverless-next.js
 nextjsApp:
   component: '@sls-next/serverless-component'
+  inputs:
+    build:
+      env:
+        COGNITO_CLIENT_ID: ${env.COGNITO_CLIENT_ID}
+        COGNITO_CLIENT_SECRET: ${env.COGNITO_CLIENT_SECRET}
+        COGNITO_DOMAIN: ${env.COGNITO_DOMAIN}

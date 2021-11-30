@@ -90,7 +90,7 @@ const serverlessConfiguration: AWS = {
           UserPoolId: {
             Ref: 'serviceUserPool',
           },
-          CallbackURLs: ['http://localhost:3000/api/auth/callback/cognito'],
+          CallbackURLs: ['${env:CLOUDFRONT_URL}/api/auth/callback/cognito', 'http://localhost:3000/api/auth/callback/cognito'],
           ExplicitAuthFlows: ['ALLOW_USER_SRP_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
           GenerateSecret: true,
           SupportedIdentityProviders: ['COGNITO'],

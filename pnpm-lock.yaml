@@ -40,15 +40,19 @@ importers:
     specifiers:
       '@geist-ui/react': ^2.2.0
       '@geist-ui/react-icons': ^1.0.1
+      '@serverless/core': ^1.1.2
+      '@serverless/template': ^1.1.4
       '@serverless/typescript': ^2.23.0
       '@types/node': ^14.14.25
       '@types/react': 17.0.30
+      dotenv-flow: ^3.2.0
       eslint: <8.0.0
       eslint-config-next: 11.1.2
       next: '12'
       next-auth: ^3.29.0
       react: 17.0.2
       react-dom: 17.0.2
+      serverless: ^2.63.0
       swr: ^1.0.1
       ts-node: ^9.1.1
       typescript: 4.4.4
@@ -61,11 +65,15 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       swr: 1.0.1_react@17.0.2
     devDependencies:
+      '@serverless/core': 1.1.2
+      '@serverless/template': 1.1.4
       '@serverless/typescript': 2.62.0
       '@types/node': 14.17.27
       '@types/react': 17.0.30
+      dotenv-flow: 3.2.0
       eslint: 7.32.0
       eslint-config-next: 11.1.2_91242401ca43a302ba665687417ec637
+      serverless: 2.63.0
       ts-node: 9.1.1_typescript@4.4.4
       typescript: 4.4.4
 
@@ -2496,6 +2504,13 @@ packages:
     resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
     dev: true
 
+  /dotenv-flow/3.2.0:
+    resolution: {integrity: sha512-GEB6RrR4AbqDJvNSFrYHqZ33IKKbzkvLYiD5eo4+9aFXr4Y4G+QaFrB/fNp0y6McWBmvaPn3ZNjIufnj8irCtg==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      dotenv: 8.6.0
+    dev: true
+
   /dotenv/10.0.0:
     resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
     engines: {node: '>=10'}
@@ -3470,6 +3485,7 @@ packages:
 
   /formidable/1.2.2:
     resolution: {integrity: sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==}
+    deprecated: 'Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau'
     dev: true
 
   /fs-constants/1.0.0:
