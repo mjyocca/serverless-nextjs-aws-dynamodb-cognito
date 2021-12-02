@@ -2,13 +2,71 @@ import type { AWS } from '@serverless/typescript';
 import functions from '@functions/index';
 import { execSync } from 'child_process';
 
-const [{ dependencies }]: [{ dependencies: Record<string, any> }] = JSON.parse(execSync('pnpm ls --prod --json').toString());
+const [{ dependencies }]: [{ dependencies: Record<string, any> }] = JSON.parse(
+  execSync('pnpm ls --prod --json').toString()
+);
 
-const externals = Object.entries(dependencies)
-	.reduce((acc: string[], [name, dep]) => {
-		if (!dep.version.startsWith('link:')) acc.push(name)
-		return acc;
-	}, []);
+const externals = Object.entries(dependencies).reduce((acc: string[], [name, dep]) => {
+  if (!dep.version.startsWith('link:')) acc.push(name);
+  return acc;
+}, []);
+
+const serviceUserPool = {
+  Type: 'AWS::Cognito::UserPool',
+  Properties: {
+    UserPoolName: 'service-user-pool-${opt:stage, self:provider.stage}',
+    UsernameAttributes: ['email'],
+    AutoVerifiedAttributes: ['email'],
+  },
+};
+
+const serviceUserPoolClient = {
+  Type: 'AWS::Cognito::UserPoolClient',
+  Properties: {
+    ClientName: 'service-user-pool-client-${opt:stage, self:provider.stage}',
+    AllowedOAuthFlows: ['code'],
+    AllowedOAuthFlowsUserPoolClient: true,
+    AllowedOAuthScopes: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+    UserPoolId: {
+      Ref: 'serviceUserPool',
+    },
+    CallbackURLs: ['${env:APP_URL}/api/auth/callback/cognito', 'http://localhost:3000/api/auth/callback/cognito'],
+    ExplicitAuthFlows: ['ALLOW_USER_SRP_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
+    GenerateSecret: true,
+    SupportedIdentityProviders: ['COGNITO'],
+  },
+};
+
+const serviceUserPoolDomain = {
+  Type: 'AWS::Cognito::UserPoolDomain',
+  Properties: {
+    UserPoolId: {
+      Ref: 'serviceUserPool',
+    },
+    Domain: 'service-user-pool-domain-${opt:stage, self:provider.stage}-${env:DOMAIN_SUFFIX}',
+  },
+};
+
+// https://github.com/vbudilov/cognito-to-dynamodb-lambda/blob/master/serverless.yml
+const UserTable = {
+  Type: 'AWS::DynamoDB::Table',
+  Properties: {
+    TableName: 'Users',
+    KeySchema: [
+      {
+        AttributeName: 'userId',
+        KeyType: 'HASH',
+      },
+    ],
+    AttributeDefinitions: [
+      {
+        AttributeName: 'userId',
+        AttributeType: 'S',
+      },
+    ],
+    BillingMode: 'PAY_PER_REQUEST',
+  },
+};
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-typescript-template',
@@ -22,7 +80,7 @@ const serverlessConfiguration: AWS = {
       target: 'node14',
       define: { 'require.resolve': undefined },
       platform: 'node',
-      external: externals
+      external: externals,
     },
   },
   useDotenv: true,
@@ -72,42 +130,10 @@ const serverlessConfiguration: AWS = {
         Type: 'AWS::ApiGatewayV2::Api',
         DependsOn: ['serviceUserPool'],
       },
-      serviceUserPool: {
-        Type: 'AWS::Cognito::UserPool',
-        Properties: {
-          UserPoolName: 'service-user-pool-${opt:stage, self:provider.stage}',
-          UsernameAttributes: ['email'],
-          AutoVerifiedAttributes: ['email'],
-        },
-      },
-      serviceUserPoolClient: {
-        Type: 'AWS::Cognito::UserPoolClient',
-        Properties: {
-          ClientName: 'service-user-pool-client-${opt:stage, self:provider.stage}',
-          AllowedOAuthFlows: ['code'],
-          AllowedOAuthFlowsUserPoolClient: true,
-          AllowedOAuthScopes: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
-          UserPoolId: {
-            Ref: 'serviceUserPool',
-          },
-          CallbackURLs: [
-            '${env:APP_URL}/api/auth/callback/cognito', 
-            'http://localhost:3000/api/auth/callback/cognito'
-          ],
-          ExplicitAuthFlows: ['ALLOW_USER_SRP_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
-          GenerateSecret: true,
-          SupportedIdentityProviders: ['COGNITO'],
-        },
-      },
-      serviceUserPoolDomain: {
-        Type: 'AWS::Cognito::UserPoolDomain',
-        Properties: {
-          UserPoolId: {
-            Ref: 'serviceUserPool',
-          },
-          Domain: 'service-user-pool-domain-${opt:stage, self:provider.stage}-${env:DOMAIN_SUFFIX}',
-        },
-      },
+      serviceUserPool,
+      serviceUserPoolClient,
+      serviceUserPoolDomain,
+      UserTable,
     },
   },
 };
