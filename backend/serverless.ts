@@ -30,12 +30,16 @@ const serviceUserPoolClient = {
     UserPoolId: {
       Ref: 'serviceUserPool',
     },
-    CallbackURLs: ['${env:APP_URL}/api/auth/callback/cognito', 'http://localhost:3000/api/auth/callback/cognito'],
+    CallbackURLs: ['http://localhost:3000/api/auth/callback/cognito'],
     ExplicitAuthFlows: ['ALLOW_USER_SRP_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
     GenerateSecret: true,
     SupportedIdentityProviders: ['COGNITO'],
   },
 };
+
+if (process.env.APP_URL) {
+  serviceUserPoolClient.Properties.CallbackURLs.push('${env:APP_URL}/api/auth/callback/cognito');
+}
 
 const serviceUserPoolDomain = {
   Type: 'AWS::Cognito::UserPoolDomain',
@@ -54,13 +58,13 @@ const UserTable = {
     TableName: 'Users',
     KeySchema: [
       {
-        AttributeName: 'userId',
+        AttributeName: 'PK',
         KeyType: 'HASH',
       },
     ],
     AttributeDefinitions: [
       {
-        AttributeName: 'userId',
+        AttributeName: 'PK',
         AttributeType: 'S',
       },
     ],
@@ -82,6 +86,7 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       external: externals,
     },
+    userPoolName: 'service-user-pool-${opt:stage, self:provider.stage}',
   },
   useDotenv: true,
   plugins: ['serverless-esbuild'],

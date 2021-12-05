@@ -1,5 +1,6 @@
 import { default as hello } from './hello';
 import { default as world } from './world';
+import { default as cognitoPostConfirm } from './cognitoPostConfirm';
 
 export const handlers = [
   {
@@ -15,4 +16,5 @@ export const handlers = [
 export default {
   hello,
   world,
+  cognitoPostConfirm,
 };
