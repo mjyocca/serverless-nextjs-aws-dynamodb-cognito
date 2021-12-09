@@ -2,6 +2,9 @@ import type { AWS } from '@serverless/typescript';
 import functions from '@functions/index';
 import { execSync } from 'child_process';
 
+type AWSResources = AWS['resources'];
+type AWSOutputs = AWSResources['Outputs'];
+
 const [{ dependencies }]: [{ dependencies: Record<string, any> }] = JSON.parse(
   execSync('pnpm ls --prod --json').toString()
 );
@@ -14,7 +17,7 @@ const externals = Object.entries(dependencies).reduce((acc: string[], [name, dep
 const serviceUserPool = {
   Type: 'AWS::Cognito::UserPool',
   Properties: {
-    UserPoolName: 'service-user-pool-${opt:stage, self:provider.stage}',
+    UserPoolName: '${self:custom.userPoolName}',
     UsernameAttributes: ['email'],
     AutoVerifiedAttributes: ['email'],
   },
@@ -23,7 +26,7 @@ const serviceUserPool = {
 const serviceUserPoolClient = {
   Type: 'AWS::Cognito::UserPoolClient',
   Properties: {
-    ClientName: 'service-user-pool-client-${opt:stage, self:provider.stage}',
+    ClientName: 'service-user-pool-client-${self:custom.stage}',
     AllowedOAuthFlows: ['code'],
     AllowedOAuthFlowsUserPoolClient: true,
     AllowedOAuthScopes: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
@@ -47,7 +50,7 @@ const serviceUserPoolDomain = {
     UserPoolId: {
       Ref: 'serviceUserPool',
     },
-    Domain: 'service-user-pool-domain-${opt:stage, self:provider.stage}-${env:DOMAIN_SUFFIX}',
+    Domain: 'service-user-pool-domain-${self:custom.stage}-${env:DOMAIN_SUFFIX}',
   },
 };
 
@@ -72,10 +75,32 @@ const UserTable = {
   },
 };
 
+const Outputs: AWSOutputs = {
+  UserPoolIdOutput: {
+    Value: { Ref: 'serviceUserPool' },
+    Export: {
+      Name: '${self:custom.stage}-UserPoolId',
+    },
+  },
+  UserPoolClientIdOutput: {
+    Value: { Ref: 'serviceUserPoolClient' },
+    Export: {
+      Name: '${self:custom.stage}-UserPoolClientId',
+    },
+  },
+  UserPoolClientSecretOutput: {
+    Value: { 'Fn::GetAtt': ['serviceUserPoolClient', 'ClientSecret'] },
+    Export: {
+      Name: '${self:custom.stage}-UserPoolClientSecret',
+    },
+  },
+};
+
 const serverlessConfiguration: AWS = {
   service: 'serverless-typescript-template',
   frameworkVersion: '2',
   custom: {
+    stage: '${opt:stage, self:provider.stage, "dev"}',
     esbuild: {
       packager: 'npm',
       bundle: true,
@@ -86,7 +111,7 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       external: externals,
     },
-    userPoolName: 'service-user-pool-${opt:stage, self:provider.stage}',
+    userPoolName: 'service-user-pool-${self:custom.stage}',
   },
   useDotenv: true,
   plugins: ['serverless-esbuild'],
@@ -140,6 +165,7 @@ const serverlessConfiguration: AWS = {
       serviceUserPoolDomain,
       UserTable,
     },
+    Outputs,
   },
 };
 

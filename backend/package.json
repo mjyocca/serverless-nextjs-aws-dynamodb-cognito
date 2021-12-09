@@ -8,7 +8,7 @@
     "start": "ts-node ./src/server.ts",
     "start:test": "TS_NODE_PROJECT=./tsconfig.json node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
     "package": "sls package",
-    "deploy": "sls deploy --stage dev --force"
+    "deploy": "sls deploy --stage ${STAGE:-dev} --force"
   },
   "engines": {
     "node": ">=14.15.0"
