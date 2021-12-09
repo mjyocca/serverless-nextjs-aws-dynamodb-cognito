@@ -2,7 +2,7 @@ import { Tabs } from '@geist-ui/react';
 import { useRouter } from 'next/router';
 import { Button, Popover, User, useTheme } from '@geist-ui/react';
 import { Settings } from '@geist-ui/react-icons';
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
 
 const MenuLinks: React.FC = () => {
@@ -63,35 +63,35 @@ const MenuLinks: React.FC = () => {
         }
       `}</style>
     </>
-  )
-}
+  );
+};
 
 type PopoverSettingsProps = {
   session: Session | null;
   loading: boolean;
-}
+};
 
 const PopoverSettings: React.FC<PopoverSettingsProps> = ({ session, loading }: PopoverSettingsProps) => {
-  const signInHandler = () => signIn('cognito', { callbackUrl: `${window.location.origin}` })
+  const signInHandler = () => signIn('cognito', { callbackUrl: `${window.location.origin}` });
   const signOutHandler = () => signOut();
   return (
     <>
-      <Popover.Item title>
-        User Settings
-      </Popover.Item>
+      <Popover.Item title>User Settings</Popover.Item>
       <Popover.Item>
-        {session && !loading
-          ? <Button onClick={signOutHandler}>Sign Out</Button>
-          : <Button onClick={signInHandler}>Sign In</Button>
-        }
+        {session && !loading ? (
+          <Button onClick={signOutHandler}>Sign Out</Button>
+        ) : (
+          <Button onClick={signInHandler}>Sign In</Button>
+        )}
       </Popover.Item>
     </>
-  )
-}
+  );
+};
 
 const Header: React.FC = () => {
   const theme = useTheme();
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
   return (
     <>
       <nav className="nav_menu">
@@ -127,8 +127,7 @@ const Header: React.FC = () => {
         }
       `}</style>
     </>
-  )
-}
-
+  );
+};
 
 export default Header;

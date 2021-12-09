@@ -1,17 +1,17 @@
-import '../styles/globals.css'
+import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from 'next-auth/react';
 import { GeistProvider, CssBaseline, Page, useTheme } from '@geist-ui/react';
 import { SWRConfig } from 'swr';
-import Header from '../components/Header'
+import Header from '../components/Header';
 import fetcher from '../lib/fetcher';
 
 export default function App({ Component, pageProps }: AppProps) {
   const theme = useTheme();
   return (
     <>
-      <Provider session={pageProps.session}>
+      <SessionProvider session={pageProps.session}>
         <Head>
           <title>React Blog with NextJS & DynamoDB</title>
         </Head>
@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
             box-sizing: border-box;
           }
         `}</style>
-      </Provider>
+      </SessionProvider>
     </>
-  )
+  );
 }
