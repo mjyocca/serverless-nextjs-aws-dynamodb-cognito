@@ -54,7 +54,6 @@ const serviceUserPoolDomain = {
   },
 };
 
-// https://github.com/vbudilov/cognito-to-dynamodb-lambda/blob/master/serverless.yml
 const UserTable = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
@@ -129,6 +128,15 @@ const serverlessConfiguration: AWS = {
     },
     region: 'us-east-1',
     lambdaHashingVersion: '20201221',
+    iam: {
+      role: {
+        statements: [
+          { Effect: 'Allow', Action: 'dynamodb:PutItem', Resource: { 'Fn::GetAtt': ['UserTable', 'Arn'] } },
+          { Effect: 'Allow', Action: 'dynamodb:UpdateItem', Resource: { 'Fn::GetAtt': ['UserTable', 'Arn'] } },
+          { Effect: 'Allow', Action: 'dynamodb:GetItem', Resource: { 'Fn::GetAtt': ['UserTable', 'Arn'] } },
+        ],
+      },
+    },
     httpApi: {
       authorizers: {
         serviceAuthorizer: {
@@ -153,7 +161,6 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  functions,
   resources: {
     Resources: {
       HttpApi: {
@@ -167,6 +174,7 @@ const serverlessConfiguration: AWS = {
     },
     Outputs,
   },
+  functions,
 };
 
 module.exports = serverlessConfiguration;

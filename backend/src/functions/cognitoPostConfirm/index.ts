@@ -29,4 +29,8 @@ export default {
       },
     } as cognitoEventTrigger,
   ],
+  environment: {
+    TABLE_NAME: { Ref: 'UserTable' },
+    REGION: '${opt:region, self:provider.region}',
+  },
 };

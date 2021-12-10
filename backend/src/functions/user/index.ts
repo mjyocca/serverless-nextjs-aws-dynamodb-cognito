@@ -6,7 +6,7 @@ export default {
     {
       httpApi: {
         method: '*',
-        path: '/api/hello',
+        path: '/api/user',
         authorizer: 'serviceAuthorizer',
       },
     },
