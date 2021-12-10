@@ -1,7 +1,7 @@
 import { Tabs } from '@geist-ui/react';
 import { useRouter } from 'next/router';
 import { Button, Popover, User, useTheme } from '@geist-ui/react';
-import { Settings } from '@geist-ui/react-icons';
+import { Sun, Moon } from '@geist-ui/react-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
 
@@ -69,14 +69,22 @@ const MenuLinks: React.FC = () => {
 type PopoverSettingsProps = {
   session: Session | null;
   loading: boolean;
+  switchTheme: () => void;
 };
 
-const PopoverSettings: React.FC<PopoverSettingsProps> = ({ session, loading }: PopoverSettingsProps) => {
+const PopoverSettings: React.FC<PopoverSettingsProps> = ({ session, loading, switchTheme }: PopoverSettingsProps) => {
   const signInHandler = () => signIn('cognito', { callbackUrl: `${window.location.origin}` });
   const signOutHandler = () => signOut();
+  const { type: themeType } = useTheme();
+  const iconTheme = themeType === 'light' ? <Moon /> : <Sun />;
   return (
     <>
       <Popover.Item title>User Settings</Popover.Item>
+      <Popover.Item title>
+        <Button onClick={switchTheme} iconRight={iconTheme} auto scale={2 / 3} px={0.6}>
+          {themeType} Mode
+        </Button>
+      </Popover.Item>
       <Popover.Item>
         {session && !loading ? (
           <Button onClick={signOutHandler}>Sign Out</Button>
@@ -88,7 +96,11 @@ const PopoverSettings: React.FC<PopoverSettingsProps> = ({ session, loading }: P
   );
 };
 
-const Header: React.FC = () => {
+type HeaderProps = {
+  switchThemes: () => void;
+};
+
+const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const theme = useTheme();
   const { data: session, status } = useSession();
   const loading = status === 'loading';
@@ -97,7 +109,7 @@ const Header: React.FC = () => {
       <nav className="nav_menu">
         <h1 className="title">Serverless NextJS Dashboard</h1>
         <div>
-          <Popover content={<PopoverSettings session={session} loading={loading} />}>
+          <Popover content={<PopoverSettings session={session} loading={loading} switchTheme={props.switchThemes} />}>
             <User src="https://unix.bio/assets/avatar.png" name={session?.user?.email}>
               {session?.user?.email}
             </User>

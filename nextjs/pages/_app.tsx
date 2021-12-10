@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
@@ -9,16 +10,20 @@ import fetcher from '../lib/fetcher';
 
 export default function App({ Component, pageProps }: AppProps) {
   const theme = useTheme();
+  const [themeType, setThemeType] = useState('light');
+  const switchThemes = () => {
+    setThemeType((last) => (last === 'dark' ? 'light' : 'dark'));
+  };
   return (
     <>
       <SessionProvider session={pageProps.session}>
         <Head>
-          <title>React Blog with NextJS & DynamoDB</title>
+          <title>Serverless NextJS Dashboard</title>
         </Head>
         <SWRConfig value={{ fetcher }}>
-          <GeistProvider>
+          <GeistProvider themeType={themeType}>
             <CssBaseline />
-            <Header />
+            <Header switchThemes={switchThemes} />
             <Page>
               <Page.Content>
                 <div className="content_wrapper">
