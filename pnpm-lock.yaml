@@ -60,6 +60,7 @@ importers:
       '@geist-ui/react-icons': ^1.0.1
       '@sls-next/cdk-construct': 3.2.0
       '@sls-next/lambda-at-edge': 3.2.0
+      '@types/dotenv-flow': ^3.2.0
       '@types/node': ^14.14.25
       '@types/react': 17.0.30
       aws-cdk: ^1.75.0
@@ -99,6 +100,7 @@ importers:
       '@aws-cdk/core': 1.135.0
       '@sls-next/cdk-construct': 3.2.0_d4f04da75434c2ca6e6f6e0a47916c7c
       '@sls-next/lambda-at-edge': 3.2.0_typescript@4.4.4
+      '@types/dotenv-flow': 3.2.0
       '@types/node': 14.17.27
       '@types/react': 17.0.30
       aws-cdk: 1.134.0
@@ -2654,6 +2656,10 @@ packages:
 
   /@types/caseless/0.12.2:
     resolution: {integrity: sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==}
+    dev: true
+
+  /@types/dotenv-flow/3.2.0:
+    resolution: {integrity: sha512-A79hbPwocbYkcTwGcDOFbKDuqyVo5mLAz/6Iq465YZ7R7Go5bT1PIM8I2jlPQkaD9u9fbotGVLkUPhX+9XUHfw==}
     dev: true
 
   /@types/http-cache-semantics/4.0.1:

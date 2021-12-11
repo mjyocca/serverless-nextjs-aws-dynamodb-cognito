@@ -10,10 +10,6 @@ builder
   .then(() => {
     const app = new App();
     new NextStack(app, 'NextJsAppStack', {
-      env: {
-        region: 'us-east-1',
-      },
-      analyticsReporting: true,
       description: 'Testing deploying NextJS Serverless Construct',
     });
   })
