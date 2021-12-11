@@ -29,7 +29,7 @@
 
 <ul>
     <li><b>Serverless Framework</b><img align="center" height="30px" src="https://assets-global.website-files.com/60acbb950c4d6606963e1fed/611631cd314b2abec6c29ec0_bolt.svg" /></li>
-		<li><b><a href="https://serverless-nextjs.com/">Serverless NextJS Component ~ CDK Construct</a></b></li>
+		<li><b><a href="https://serverless-nextjs.com/docs/cdkconstruct">Serverless NextJS Component ~ CDK Construct</a></b></li>
     <li><b>PNPM</b><img align="center" height="30px" src="https://pnpm.io/img/pnpm-no-name-with-frame.svg" /></li>
 </ul>
 
