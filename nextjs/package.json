@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "pnpm run build; pnpm exec serverless --stage=dev"
+    "deploy": "ts-node bin.ts"
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
@@ -19,11 +19,16 @@
     "swr": "^1.0.1"
   },
   "devDependencies": {
+    "@aws-cdk/aws-lambda": "^1.134.0",
+    "@aws-cdk/core": "^1.134.0",
     "@serverless/core": "^1.1.2",
     "@serverless/template": "^1.1.4",
     "@serverless/typescript": "^2.23.0",
+    "@sls-next/cdk-construct": "^3.7.0-alpha.0",
+    "@sls-next/lambda-at-edge": "^3.7.0-alpha.0",
     "@types/node": "^14.14.25",
     "@types/react": "17.0.30",
+    "aws-cdk": "1.134.0",
     "dotenv-flow": "^3.2.0",
     "eslint": "<8.0.0",
     "eslint-config-next": "11.1.2",
