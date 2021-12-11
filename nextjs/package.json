@@ -1,39 +1,54 @@
 {
-  "name": "nextjs",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "deploy": "ts-node bin.ts"
+	"name": "nextjs",
+	"version": "0.1.0",
+	"private": true,
+	"bin": {
+    "serverless-nextjs-cdk-example": "cdk/bin.js"
   },
-  "dependencies": {
-    "@geist-ui/react": "^2.2.0",
-    "@geist-ui/react-icons": "^1.0.1",
-    "next": "12",
-    "next-auth": "^4.0.5",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "swr": "^1.0.1"
-  },
-  "devDependencies": {
-    "@aws-cdk/aws-lambda": "^1.134.0",
-    "@aws-cdk/core": "^1.134.0",
-    "@serverless/core": "^1.1.2",
-    "@serverless/template": "^1.1.4",
-    "@serverless/typescript": "^2.23.0",
-    "@sls-next/cdk-construct": "^3.7.0-alpha.0",
-    "@sls-next/lambda-at-edge": "^3.7.0-alpha.0",
-    "@types/node": "^14.14.25",
-    "@types/react": "17.0.30",
-    "aws-cdk": "1.134.0",
-    "dotenv-flow": "^3.2.0",
-    "eslint": "<8.0.0",
-    "eslint-config-next": "11.1.2",
-    "serverless": "^2.63.0",
-    "ts-node": "^9.1.1",
-    "typescript": "4.4.4"
-  }
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"cdk:build": "tsc --project tsconfig.cdk.json",
+		"cdk:synth": "cdk synth",
+		"cdk": "cdk",
+		"deploy": "pnpm cdk:build; cdk deploy"
+	},
+	"dependencies": {
+		"@geist-ui/react": "^2.2.0",
+		"@geist-ui/react-icons": "^1.0.1",
+		"next": "12",
+		"next-auth": "^4.0.5",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
+		"source-map-support": "^0.5.20",
+		"swr": "^1.0.1"
+	},
+	"devDependencies": {
+		"@aws-cdk/aws-certificatemanager": "^1.75.0",
+		"@aws-cdk/aws-cloudfront": "^1.75.0",
+		"@aws-cdk/aws-cloudfront-origins": "^1.75.0",
+		"@aws-cdk/aws-iam": "^1.75.0",
+		"@aws-cdk/aws-lambda": "^1.75.0",
+		"@aws-cdk/aws-lambda-event-sources": "^1.75.0",
+		"@aws-cdk/aws-logs": "^1.75.0",
+		"@aws-cdk/aws-route53": "^1.75.0",
+		"@aws-cdk/aws-route53-targets": "^1.75.0",
+		"@aws-cdk/aws-s3": "^1.75.0",
+		"@aws-cdk/aws-s3-deployment": "^1.75.0",
+		"@aws-cdk/aws-sqs": "^1.75.0",
+		"@aws-cdk/core": "^1.75.0",
+		"@sls-next/cdk-construct": "3.2.0",
+		"@sls-next/lambda-at-edge": "3.2.0",
+		"@types/node": "^14.14.25",
+		"@types/react": "17.0.30",
+		"aws-cdk": "^1.75.0",
+		"dotenv-flow": "^3.2.0",
+		"eslint": "<8.0.0",
+		"eslint-config-next": "11.1.2",
+		"serverless": "^2.63.0",
+		"ts-node": "^9.1.1",
+		"typescript": "^4.4.4"
+	}
 }

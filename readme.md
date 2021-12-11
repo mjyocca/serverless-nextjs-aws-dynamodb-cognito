@@ -35,6 +35,14 @@
 
 ### Local Setup :wrench:
 
+```
+npm install -g pnpm
+```
+
+```
+pnpm install -g aws-cdk
+```
+
 [here]
 
 ### Deploy :fire:

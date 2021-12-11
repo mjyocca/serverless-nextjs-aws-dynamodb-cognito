@@ -1,0 +1,36 @@
+{
+	"compilerOptions": {
+		"target": "ES2018",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"strictPropertyInitialization": false,
+		"experimentalDecorators": true,
+		"inlineSourceMap": true,
+		"inlineSources": true,
+		"declaration": true,
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+	},
+	"include": [
+		"next-env.d.ts",
+		"cdk"
+	],
+	"exclude": [
+		"components",
+		"lib",
+		"pages",
+		"public",
+		"styles",
+		".next",
+		"node_modules",
+		"cdk.out"
+	]
+}

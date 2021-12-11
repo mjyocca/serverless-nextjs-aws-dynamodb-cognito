@@ -6,7 +6,8 @@ import { Runtime } from '@aws-cdk/aws-lambda';
 export class NextStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: cdk.StackProps) {
     super(scope, id, props);
-    new NextJSLambdaEdge(this, 'NextJsApp', {
+
+    const nextApp = new NextJSLambdaEdge(this, 'NextJsApp', {
       serverlessBuildOutDir: './build',
       runtime: Runtime.NODEJS_12_X,
       memory: 1024,
@@ -17,6 +18,15 @@ export class NextStack extends cdk.Stack {
         defaultLambda: `Fn${id}`,
         imageLambda: `${id}Image`,
       },
+    });
+
+    new cdk.CfnOutput(this, 'Domain', {
+      value: nextApp.distribution.domainName,
+      description: 'CloudFrontDomain',
+    });
+    new cdk.CfnOutput(this, 'ID', {
+      value: nextApp.distribution.distributionId,
+      description: 'DistributionID',
     });
   }
 }

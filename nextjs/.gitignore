@@ -36,3 +36,11 @@ yarn-error.log*
 
 .serverless
 .serverless_nextjs
+
+# For AWS cdk
+cdk/**/*.d.ts
+cdk/**/*.js
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
