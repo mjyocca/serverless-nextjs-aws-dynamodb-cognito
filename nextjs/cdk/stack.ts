@@ -13,6 +13,11 @@ export class NextStack extends cdk.Stack {
       memory: 1024,
       timeout: Duration.seconds(30),
       withLogging: true,
+      name: {
+        apiLambda: `${id}Api`,
+        defaultLambda: `Fn${id}`,
+        imageLambda: `${id}Image`,
+      },
     });
 
     new cdk.CfnOutput(this, 'Domain', {

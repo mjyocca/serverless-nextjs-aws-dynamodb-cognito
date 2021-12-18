@@ -1,27 +1,24 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import useSWR from 'swr';
 import Image from 'next/image';
+import Dashboard from '../components/Dashboard';
 import styles from '../styles/Home.module.css';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-
   return (
     <>
       <Head>
         <title>{!session && <>Welcome and Sign in</>}</title>
       </Head>
       <div>
-        {session && (
+        {session ? (
+          <Dashboard />
+        ) : (
           <>
-            <div>Signed In</div>
-            <>{JSON.stringify(session)}</>
-          </>
-        )}
-        {!session && (
-          <>
-            <div>Signed Out</div>
+            <div>Welcome and Sign in</div>
           </>
         )}
       </div>

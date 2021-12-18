@@ -1,4 +1,5 @@
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
-  const res = await fetch(input, init);
+  const APIGATEWAY = process.env.APIGATEWAY ?? '';
+  const res = await fetch(`${APIGATEWAY}${input}`, init);
   return res.json();
 }

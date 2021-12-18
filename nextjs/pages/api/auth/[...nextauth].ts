@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
       CognitoProvider({
         idToken: true,
@@ -12,5 +13,15 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         issuer: `https://cognito-idp.${process.env.REGION}.amazonaws.com/${process.env.COGNITO_POOL_ID}`,
       }),
     ],
+    callbacks: {
+      async session({ session, token, user }) {
+        session.accessToken = token.accessToken;
+        return session;
+      },
+      async jwt({ token, account }) {
+        if (account) token.accessToken = account.access_token;
+        return token;
+      },
+    },
   });
 }
