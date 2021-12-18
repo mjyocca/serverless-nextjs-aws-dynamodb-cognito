@@ -5,7 +5,13 @@ export default {
   events: [
     {
       httpApi: {
-        method: '*',
+        method: 'OPTIONS',
+        path: '/{proxy+}',
+      },
+    },
+    {
+      httpApi: {
+        method: 'GET',
         path: '/api/user',
         authorizer: 'serviceAuthorizer',
       },

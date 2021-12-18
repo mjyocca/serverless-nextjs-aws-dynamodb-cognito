@@ -1,6 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 import functions from '@functions/index';
 import { execSync } from 'child_process';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 type AWSResources = AWS['resources'];
 type AWSOutputs = AWSResources['Outputs'];
@@ -40,8 +43,15 @@ const serviceUserPoolClient = {
   },
 };
 
+const httpApiCors = {
+  allowedOrigins: ['http://localhost:3000'],
+  allowCredentials: true,
+  maxAge: 86400,
+};
+
 if (process.env.APP_URL) {
   serviceUserPoolClient.Properties.CallbackURLs.push('${env:APP_URL}/api/auth/callback/cognito');
+  httpApiCors.allowedOrigins.push(process.env.APP_URL);
 }
 
 const serviceUserPoolDomain = {
@@ -138,6 +148,8 @@ const serverlessConfiguration: AWS = {
       },
     },
     httpApi: {
+      payload: '2.0',
+      cors: httpApiCors,
       authorizers: {
         serviceAuthorizer: {
           name: 'serviceAuthorizer',
