@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 import functions from '@functions/index';
 import { execSync } from 'child_process';
+import fs from 'fs';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -16,6 +17,11 @@ const externals = Object.entries(dependencies).reduce((acc: string[], [name, dep
   if (!dep.version.startsWith('link:')) acc.push(name);
   return acc;
 }, []);
+
+const cognitoCSS = fs
+  .readFileSync('cognito.css', 'utf8')
+  .replace(/(\r\n\t|\n|\r\t)/gm, '')
+  .replace('/*.+?*/', '');
 
 const serviceUserPool = {
   Type: 'AWS::Cognito::UserPool',
@@ -43,6 +49,19 @@ const serviceUserPoolClient = {
   },
 };
 
+const userPoolUICustomization = {
+  Type: 'AWS::Cognito::UserPoolUICustomizationAttachment',
+  Properties: {
+    UserPoolId: {
+      Ref: 'serviceUserPool',
+    },
+    ClientId: {
+      Ref: 'serviceUserPoolClient',
+    },
+    CSS: cognitoCSS,
+  },
+};
+
 const httpApiCors = {
   allowedOrigins: ['http://localhost:3000'],
   allowCredentials: true,
@@ -52,6 +71,12 @@ const httpApiCors = {
 if (process.env.APP_URL) {
   serviceUserPoolClient.Properties.CallbackURLs.push('${env:APP_URL}/api/auth/callback/cognito');
   httpApiCors.allowedOrigins.push(process.env.APP_URL);
+} else {
+  console.warn(`
+		After deploying the nextjs package, re-deploy this package adding 'APP_URL' to .env file with the value of cloudfront distribution dns address.
+
+		Should resolve any CORS related issues.
+	`);
 }
 
 const serviceUserPoolDomain = {
@@ -134,7 +159,8 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      DOMAIN_SUFFIX: '${env.DOMAIN_SUFFIX}',
+      DOMAIN_SUFFIX: '${env:DOMAIN_SUFFIX}',
+      APP_URL: '${env:APP_URL}',
     },
     region: 'us-east-1',
     lambdaHashingVersion: '20201221',
@@ -181,6 +207,7 @@ const serverlessConfiguration: AWS = {
       },
       serviceUserPool,
       serviceUserPoolClient,
+      userPoolUICustomization,
       serviceUserPoolDomain,
       UserTable,
     },

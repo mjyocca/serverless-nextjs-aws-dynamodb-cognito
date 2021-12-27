@@ -1,0 +1,39 @@
+
+.background-customizable {
+	background: #fff;
+}
+
+.banner-customizable {
+	background: linear-gradient(#6b9af8, #6b92ef)
+}
+
+.submitButton-customizable {
+	font-weight: 500;
+	color: rgb(255, 255, 255);
+	background-color: rgb(0, 112, 243);
+	border: 1px solid rgb(0, 112, 243);
+}
+
+.submitButton-customizable:hover {
+	font-weight: 500;
+	transform: translate3d(0px, -1px, 0px);
+	color: rgb(255, 255, 255);
+	background-color: rgb(0, 112, 243);
+	border: 1px solid rgb(0, 112, 243);
+}
+
+/*
+.background-customizable {}
+.banner-customizable {}
+.errorMessage-customizable {}
+.idpButton-customizable {}
+.idpButton-customizable:hover {}
+.inputField-customizable {}
+.inputField-customizable:focus {}
+.label-customizable {}
+.legalText-customizable {}
+.logo-customizable {}
+.submitButton-customizable {}
+.submitButton-customizable:hover {}
+.textDescription-customizable {}
+*/

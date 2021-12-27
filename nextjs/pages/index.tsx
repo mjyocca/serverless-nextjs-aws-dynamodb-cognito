@@ -1,9 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import useSWR from 'swr';
-import Image from 'next/image';
 import Dashboard from '../components/Dashboard';
-import styles from '../styles/Home.module.css';
+import { Display, Image } from '@geist-ui/react';
 import { useSession } from 'next-auth/react';
 
 const Home: NextPage = () => {
@@ -19,6 +17,9 @@ const Home: NextPage = () => {
         ) : (
           <>
             <div>Welcome and Sign in</div>
+            <Display shadow caption="An open-source design system for building modern websites and applications.">
+              <Image width="435px" height="200px" src="https://react.geist-ui.dev/images/geist-banner.png" alt="test" />
+            </Display>
           </>
         )}
       </div>

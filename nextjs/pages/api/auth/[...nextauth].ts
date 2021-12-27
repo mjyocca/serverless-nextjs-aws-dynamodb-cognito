@@ -14,7 +14,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       }),
     ],
     callbacks: {
-      async session({ session, token, user }) {
+      async session({ session, token }) {
         session.accessToken = token.accessToken;
         return session;
       },

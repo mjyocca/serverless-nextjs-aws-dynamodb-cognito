@@ -1,9 +1,6 @@
 import type { PostConfirmationTriggerEvent, Context } from 'aws-lambda';
-import dynamodb from '@libs/dynamodb';
-import { PutItemCommand } from '@aws-sdk/client-dynamodb';
-import type { PutItemCommandInput } from '@aws-sdk/client-dynamodb';
-import type { UserEntity } from '@libs/user';
-import { User } from '@libs/user';
+import type { UserEntity } from '@libs/dynamodb/user';
+import { createUser } from '@libs/dynamodb/user';
 const { log } = console;
 
 export const main = async (event: PostConfirmationTriggerEvent, context: Context) => {
@@ -11,15 +8,12 @@ export const main = async (event: PostConfirmationTriggerEvent, context: Context
     request: { userAttributes },
   } = event;
   log({ userAttributes, event, context });
-  if (!userAttributes.sub) return event;
-  const params: PutItemCommandInput = {
-    TableName: process.env.TABLE_NAME as string,
-    Item: User({
-      userId: userAttributes.email,
-      email: userAttributes.email,
-      sub: userAttributes.sub,
-    } as UserEntity),
+  const user = {
+    userId: userAttributes.email,
+    email: userAttributes.email,
+    sub: userAttributes.sub,
   };
-  await dynamodb.send(new PutItemCommand(params));
+  const res = await createUser(user as UserEntity);
+  log({ res });
   return event;
 };

@@ -1,7 +1,7 @@
 import { Tabs } from '@geist-ui/react';
 import { useRouter } from 'next/router';
-import { Button, Popover, User, useTheme } from '@geist-ui/react';
-import { Sun, Moon } from '@geist-ui/react-icons';
+import { Avatar, Button, Popover, useTheme } from '@geist-ui/react';
+import { Sun, Moon, Settings } from '@geist-ui/react-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
 
@@ -73,16 +73,22 @@ type PopoverSettingsProps = {
 };
 
 const PopoverSettings: React.FC<PopoverSettingsProps> = ({ session, loading, switchTheme }: PopoverSettingsProps) => {
-  const signInHandler = () => signIn('cognito', { callbackUrl: `${window.location.origin}` });
+  const signInHandler = () => signIn('cognito', { callbackUrl: window.location.origin });
   const signOutHandler = () => signOut();
   const { type: themeType } = useTheme();
   const iconTheme = themeType === 'light' ? <Moon /> : <Sun />;
+  const router = useRouter();
   return (
     <>
       <Popover.Item title>User Settings</Popover.Item>
       <Popover.Item title>
         <Button onClick={switchTheme} iconRight={iconTheme} auto scale={2 / 3} px={0.6}>
           {themeType} Mode
+        </Button>
+      </Popover.Item>
+      <Popover.Item title line={false}>
+        <Button onClick={() => router.push('/settings')} iconRight={<Settings />} auto scale={2 / 3} px={0.6}>
+          Settings
         </Button>
       </Popover.Item>
       <Popover.Item>
@@ -103,21 +109,33 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const theme = useTheme();
   const { data: session, status } = useSession();
+  console.log({ session });
   const loading = status === 'loading';
+  const iconTheme = theme.type === 'light' ? <Moon /> : <Sun />;
   return (
     <>
       <nav className="nav_menu">
         <h1 className="title">Serverless NextJS Dashboard</h1>
-        <div>
-          <Popover content={<PopoverSettings session={session} loading={loading} switchTheme={props.switchThemes} />}>
-            <User src="https://unix.bio/assets/avatar.png" name={session?.user?.email}>
-              {session?.user?.email}
-            </User>
+        <div className="settings">
+          <Button
+            className="theme-switcher"
+            onClick={props.switchThemes}
+            icon={iconTheme}
+            type="abort"
+            auto
+            scale={2 / 3}
+            px={0.6}
+          />
+          <Popover
+            placement="bottomEnd"
+            content={<PopoverSettings session={session} loading={loading} switchTheme={props.switchThemes} />}
+          >
+            <Avatar text="OA" />
           </Popover>
         </div>
       </nav>
       <MenuLinks />
-      <style jsx>{`
+      <style global jsx>{`
         .nav_menu {
           display: flex;
           align-items: center;
@@ -130,6 +148,14 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
           background-color: ${theme.palette.background};
           font-size: 16px;
           box-sizing: border-box;
+        }
+        .theme-switcher {
+          margin-right: 7px;
+        }
+        .settings {
+          display: flex;
+          align-items: center;
+          margin: 15px;
         }
         .title {
           font-size: 1rem;

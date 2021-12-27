@@ -1,3 +1,4 @@
+import type { NextPage } from 'next';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
@@ -7,7 +8,7 @@ async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Prom
   return res.json();
 }
 
-export default function Dashboard() {
+const Settings: NextPage = () => {
   const { data: session } = useSession();
   console.log({ session, accessToken: session?.accessToken });
   const requestConfig = useMemo(
@@ -19,12 +20,16 @@ export default function Dashboard() {
     }),
     [session?.accessToken]
   );
-  const { data } = useSWR<any>(
-    () => (requestConfig ? [`/api/user?id=${encodeURIComponent(session?.user?.email || '')}`, requestConfig] : null),
-    fetcher
-  );
-  console.log({ requestConfig });
-  console.log({ data });
+  const { data: helloData } = useSWR<any>([`/api/hello`, requestConfig], fetcher);
 
-  return <>{JSON.stringify(data)}</>;
-}
+  console.log({ helloData });
+
+  return (
+    <>
+      Settings
+      {JSON.stringify(helloData)}
+    </>
+  );
+};
+
+export default Settings;
