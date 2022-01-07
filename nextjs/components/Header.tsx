@@ -109,7 +109,6 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const theme = useTheme();
   const { data: session, status } = useSession();
-  console.log({ session });
   const loading = status === 'loading';
   const iconTheme = theme.type === 'light' ? <Moon /> : <Sun />;
   return (

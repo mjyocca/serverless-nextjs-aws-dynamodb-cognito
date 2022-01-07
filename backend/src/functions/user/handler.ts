@@ -12,9 +12,9 @@ async function GetHandler({ query }, res) {
   return res.status(400).json({ error: 'user not found' });
 }
 
-async function PatchHandler(req, res) {
+async function PatchHandler(req: LambdaRequest, res: LambdaResponse) {
   const { body } = req;
-  const updatedUserInfo: UserEntityUpdate = JSON.parse(body);
+  const updatedUserInfo: UserEntityUpdate = body;
   await updateUser(updatedUserInfo);
   return res.status(200);
 }

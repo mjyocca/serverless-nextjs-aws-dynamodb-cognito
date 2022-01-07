@@ -2,10 +2,10 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Dashboard from '../components/Dashboard';
 import { Display, Image } from '@geist-ui/react';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '../lib/hooks/useAuth';
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
+  const { session } = useAuth();
   return (
     <>
       <Head>

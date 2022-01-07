@@ -70,13 +70,10 @@ const httpApiCors = {
 
 if (process.env.APP_URL) {
   serviceUserPoolClient.Properties.CallbackURLs.push('${env:APP_URL}/api/auth/callback/cognito');
-  httpApiCors.allowedOrigins.push(process.env.APP_URL);
 } else {
-  console.warn(`
-		After deploying the nextjs package, re-deploy this package adding 'APP_URL' to .env file with the value of cloudfront distribution dns address.
-
-		Should resolve any CORS related issues.
-	`);
+  console.warn(
+    `After deploying the nextjs package, re-deploy this package adding 'APP_URL' to .env file with the value of cloudfront distribution dns address. If using registered domain this step is not required.`
+  );
 }
 
 const serviceUserPoolDomain = {
