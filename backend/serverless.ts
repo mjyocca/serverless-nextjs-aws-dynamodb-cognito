@@ -106,6 +106,38 @@ const UserTable = {
   },
 };
 
+const SSMParams = {
+  cognitoUserPoolId: {
+    Type: 'AWS::SSM::Parameter',
+    Properties: {
+      Name: '/${opt:stage}/cognito/poolId',
+      Type: 'String',
+      Value: { Ref: 'serviceUserPool' },
+    },
+  },
+  cognitoUserPoolClientId: {
+    Type: 'AWS::SSM::Parameter',
+    Properties: {
+      Name: '/${opt:stage}/cognito/clientId',
+      Type: 'String',
+      Value: { Ref: 'serviceUserPoolClient' },
+    },
+  },
+  apiGatewayURL: {
+    Type: 'AWS::SSM::Parameter',
+    Properties: {
+      Name: '/${opt:stage}/api/url',
+      Type: 'String',
+      Value: {
+        'Fn::Join': [
+          '',
+          ['https://', { Ref: 'HttpApi' }, '.execute-api.${opt:region, self:provider.region}.amazonaws.com'],
+        ],
+      },
+    },
+  },
+};
+
 const Outputs: AWSOutputs = {
   UserPoolIdOutput: {
     Value: { Ref: 'serviceUserPool' },
@@ -207,6 +239,7 @@ const serverlessConfiguration: AWS = {
       userPoolUICustomization,
       serviceUserPoolDomain,
       UserTable,
+      ...SSMParams,
     },
     Outputs,
   },

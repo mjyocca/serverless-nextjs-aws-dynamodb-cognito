@@ -8,6 +8,6 @@ export default function proxy(req: NextApiRequest, res: NextApiResponse) {
     });
   } catch (err) {
     console.log({ err });
-    return res.status(201).json({ error: err });
+    return res.status(500).json({ error: err });
   }
 }

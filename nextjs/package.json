@@ -16,6 +16,7 @@
     "deploy": "pnpm cdk:build; cdk deploy"
   },
   "dependencies": {
+    "@aws-sdk/client-ssm": "^3.45.0",
     "@geist-ui/react": "^2.2.0",
     "@geist-ui/react-icons": "^1.0.1",
     "next": "^12.0.7",

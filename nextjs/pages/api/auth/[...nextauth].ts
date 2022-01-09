@@ -1,8 +1,16 @@
 import NextAuth from 'next-auth';
 import CognitoProvider from 'next-auth/providers/cognito';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { EnvManager } from '../../../lib/envManager';
+
+EnvManager.set('cognito', (stage) => [
+  { env: 'COGNITO_CLIENT_ID', ssm: `/${stage}/cognito/clientId` },
+  { env: 'COGNITO_CLIENT_SECRET', ssm: `/${stage}/cognito/clientSecret` },
+  { env: 'COGNITO_POOL_ID', ssm: `/${stage}/cognito/poolId` },
+]);
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+  if (!EnvManager.has('cognito')) await EnvManager.fetchVars('cognito');
   return await NextAuth(req, res, {
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
