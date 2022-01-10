@@ -106,6 +106,18 @@ const UserTable = {
   },
 };
 
+const InvokeCustomLambda = {
+  Type: 'Custom::InvokeCustomLambda',
+  DependsOn: ['UserPoolClientSecretLambdaFunction'],
+  Properties: {
+    ServiceToken: {
+      'Fn::GetAtt': ['UserPoolClientSecretLambdaFunction', 'Arn'],
+    },
+    userpoolId: { Ref: 'serviceUserPool' },
+    clientId: { Ref: 'serviceUserPoolClient' },
+  },
+};
+
 const SSMParams = {
   cognitoUserPoolId: {
     Type: 'AWS::SSM::Parameter',
@@ -121,6 +133,14 @@ const SSMParams = {
       Name: '/${opt:stage}/cognito/clientId',
       Type: 'String',
       Value: { Ref: 'serviceUserPoolClient' },
+    },
+  },
+  cognitoUserPoolClientSecret: {
+    Type: 'AWS::SSM::Parameter',
+    Properties: {
+      Name: '/${opt:stage}/cognito/clientSecret',
+      Type: 'String',
+      Value: { 'Fn::GetAtt': ['InvokeCustomLambda', 'clientSecret'] },
     },
   },
   apiGatewayURL: {
@@ -151,12 +171,23 @@ const Outputs: AWSOutputs = {
       Name: '${self:custom.stage}-UserPoolClientId',
     },
   },
-  UserPoolClientSecretOutput: {
-    Value: { 'Fn::GetAtt': ['serviceUserPoolClient', 'ClientSecret'] },
-    Export: {
-      Name: '${self:custom.stage}-UserPoolClientSecret',
+};
+
+const resources: AWS['resources'] = {
+  Resources: {
+    HttpApi: {
+      Type: 'AWS::ApiGatewayV2::Api',
+      DependsOn: ['serviceUserPool'],
     },
+    serviceUserPool,
+    serviceUserPoolClient,
+    userPoolUICustomization,
+    serviceUserPoolDomain,
+    UserTable,
+    InvokeCustomLambda,
+    ...SSMParams,
   },
+  Outputs,
 };
 
 const serverlessConfiguration: AWS = {
@@ -196,6 +227,11 @@ const serverlessConfiguration: AWS = {
     iam: {
       role: {
         statements: [
+          {
+            Effect: 'Allow',
+            Action: 'cognito-idp:DescribeUserPoolClient',
+            Resource: { 'Fn::GetAtt': ['serviceUserPool', 'Arn'] },
+          },
           { Effect: 'Allow', Action: 'dynamodb:PutItem', Resource: { 'Fn::GetAtt': ['UserTable', 'Arn'] } },
           { Effect: 'Allow', Action: 'dynamodb:UpdateItem', Resource: { 'Fn::GetAtt': ['UserTable', 'Arn'] } },
           { Effect: 'Allow', Action: 'dynamodb:GetItem', Resource: { 'Fn::GetAtt': ['UserTable', 'Arn'] } },
@@ -228,21 +264,7 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  resources: {
-    Resources: {
-      HttpApi: {
-        Type: 'AWS::ApiGatewayV2::Api',
-        DependsOn: ['serviceUserPool'],
-      },
-      serviceUserPool,
-      serviceUserPoolClient,
-      userPoolUICustomization,
-      serviceUserPoolDomain,
-      UserTable,
-      ...SSMParams,
-    },
-    Outputs,
-  },
+  resources,
   functions,
 };
 

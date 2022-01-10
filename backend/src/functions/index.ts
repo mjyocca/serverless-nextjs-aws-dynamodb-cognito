@@ -1,5 +1,6 @@
 import { default as user } from './user';
 import { default as cognitoPostConfirm } from './cognitoPostConfirm';
+import { default as userPoolClientSecret } from './cloudFormation';
 
 export const handlers = [
   {
@@ -11,4 +12,5 @@ export const handlers = [
 export default {
   user,
   cognitoPostConfirm,
+  userPoolClientSecret,
 };
