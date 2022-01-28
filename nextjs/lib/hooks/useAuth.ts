@@ -10,7 +10,6 @@ export const useAuth = () => {
   return {
     session,
     userId,
-    token: session?.accessToken,
     isAuthenticated,
   };
 };
